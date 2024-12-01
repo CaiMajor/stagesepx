@@ -4,7 +4,7 @@
 from stagesepx.cutter import VideoCutter
 
 
-video_path = '../../demo.mp4'
+video_path = '../../Vulakn打开_6分钟2024_10_18_14_42_IMG_9468.MOV'
 
 # --- cut ---
 cutter = VideoCutter()

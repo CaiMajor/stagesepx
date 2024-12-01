@@ -164,13 +164,6 @@ class ClassifierResult(object):
         logger.warning(f"no stage named {stage_name} found")
 
     def get_stage_range(self) -> typing.List[typing.List[SingleClassifierResult]]:
-        """
-        return a range list.
-        if your video has 30 frames, with 3 stages, this list can be:
-        [(0, 1, ... 11), (12, 13 ... 20), (21, 22 ... 30)]
-
-        :return:
-        """
         result: typing.List[typing.List[SingleClassifierResult]] = []
 
         # real data
@@ -195,8 +188,16 @@ class ClassifierResult(object):
             cur = next_one
             cur_index = next_one.frame_id - 1
 
-        # issue #90
-        assert len(result) > 0, "video seems to only contain one stage"
+        # 添加日志，记录当前状态
+        logger.debug(f"stage range result: {result}")
+        logger.debug(f"detected stages: {set(self.get_stage_list())}")
+        
+        try:
+            assert len(result) > 0, "video seems to only contain one stage"
+        except AssertionError as e:
+            logger.warning("视频只包含一个阶段，将返回完整视频作为单个阶段")
+            # 返回完整视频作为单个阶段
+            return [self.data]
 
         last_data = self.data[-1]
         last_result = result[-1][-1]
@@ -433,6 +434,7 @@ class BaseClassifier(object):
 
     def _classify_frame(self, frame: VideoFrame, *args, **kwargs) -> str:
         """must be implemented by sub class"""
+        # 必须由子类实现
         raise NotImplementedError
 
     def _apply_hook(self, frame: VideoFrame, *args, **kwargs) -> VideoFrame:
@@ -451,16 +453,15 @@ class BaseClassifier(object):
         **kwargs,
     ) -> ClassifierResult:
         """
-        start classification
-
-        :param video: path to target video or VideoObject
-        :param valid_range: frames out of these ranges will be ignored
-        :param step: step between frames, default to 1
-        :param keep_data: default to False. if enabled, all the frames will contain numpy data.
-        :param boost_mode:
-        :param args:
-        :param kwargs:
-        :return:
+        开始分类
+        :p aram video：目标视频或 VideoObject 的路径
+                :p aram valid_range：超出这些范围的帧将被忽略
+                :p aram step：帧之间的步长，默认为 1
+                :p aram keep_data： 默认为 False。如果启用，则所有帧都将包含 NumPy 数据。
+                :p阿拉姆boost_mode：
+                :p aram args：
+                :p aram kwargs：
+                ：返回：
         """
         logger.debug(f"classify with {self.__class__.__name__}")
         start_time = time.time()

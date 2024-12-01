@@ -109,3 +109,6 @@ venv.bak/
 example/*.mp4
 example/*.html
 example/*.h5
+/demo/*
+!/demo/*.py
+/Demo_Keras/

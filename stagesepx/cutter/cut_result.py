@@ -347,16 +347,16 @@ class VideoCutResult(object):
         **kwargs,
     ) -> str:
         """
-        pick some frames from range, and save them as files
+        从 Range 中挑选一些帧，并将它们保存为 Files
 
-        :param range_list: VideoCutRange list
-        :param frame_count: default to 3, and finally you will get 3 frames for each range
-        :param to_dir: will saved to this path
-        :param prune: float, 0-1. if set it 0.9, some stages which are too similar (ssim > 0.9) will be removed
-        :param meaningful_name: bool, False by default. if true, image names will become meaningful (with timestamp/id or something else)
-        :param args:
-        :param kwargs:
-        :return:
+        :p aram range_list： VideoCutRange 列表
+                :p aram frame_count：默认为 3，最后每个范围将获得 3 帧
+                :p aram to_dir： 将保存到此路径
+                :p aram prune： float， 0-1.如果将其设置为 0.9，则会删除一些过于相似的阶段（SSIM > 0.9）
+                :p aram meaningful_name： bool，默认为 False。如果为 true，则图像名称将变得有意义（带有 timestamp/id 或其他内容）
+                :p aram args：
+                :p aram kwargs：
+        ：返回：
         """
         stage_list = list()
         # build tag and get frames
@@ -407,9 +407,9 @@ class VideoCutResult(object):
                 each_frame_path = os.path.join(each_stage_dir, image_name)
                 compressed = toolbox.compress_frame(each_frame_object.data, **kwargs)
                 cv2.imwrite(each_frame_path, compressed)
-                logger.debug(
-                    f"frame [{each_frame_object.frame_id}] saved to {each_frame_path}"
-                )
+                # logger.debug(
+                #     f"frame [{each_frame_object.frame_id}] saved to {each_frame_path}"
+                # )
 
         return to_dir
 

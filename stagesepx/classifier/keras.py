@@ -214,10 +214,10 @@ class KerasClassifier(BaseModelClassifier):
 
     def predict_with_object(self, frame: np.ndarray) -> str:
         """
-        predict a single object
+        预测单个对象
 
-        :param frame:
-        :return:
+        :p aram 帧：
+                ：返回：
         """
         # resize for model
         frame = cv2.resize(frame, dsize=self.data_size)
